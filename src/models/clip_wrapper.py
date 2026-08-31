@@ -79,8 +79,6 @@ class VisionLanguageRetriever(nn.Module):
             params += list(self.image_adapter.parameters())
         if self.text_adapter is not None:
             params += list(self.text_adapter.parameters())
-        if not params:
-            params = list(self.clip.parameters())
         return params
 
     @classmethod

@@ -81,7 +81,10 @@ sketches across 12 overlapping classes.
 | Source → Source (upper bound) | — | — | — | — |
 | Source → Target (zero-shot) | 4.17% | 21.39% | 38.89% | 13.33% |
 | Method A: full fine-tune | 4.44% | 24.44% | 49.72% | 15.30% |
-| Method B: adapter + MMD | 4.72% | 21.39% | 40.00% | 15.09% |
+| Method B: adapter + MMD + hard negatives | **5.00%** | 21.39% | **40.00%** | **15.09%** |
+| Ablation: no MMD | 4.44% | 19.72% | 39.72% | 14.39% |
+| Ablation: no adapter | 4.17% | 21.39% | 38.89% | 13.33% |
+| Ablation: no hard negatives | 4.44% | 20.56% | 37.50% | 13.80% |
 
 ### Interpretation
 

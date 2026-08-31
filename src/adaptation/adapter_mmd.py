@@ -58,7 +58,16 @@ def run_adapter_mmd(model, train_loader: DataLoader, source_bank: torch.Tensor, 
     for p in model.clip.parameters():
         p.requires_grad = False
 
-    optim = torch.optim.AdamW(model.trainable_parameters(), lr=cfg["lr"], weight_decay=cfg["weight_decay"])
+    trainable = model.trainable_parameters()
+    optim = None
+
+    if trainable:
+        optim = torch.optim.AdamW(
+            trainable,
+            lr=cfg["lr"],
+            weight_decay=cfg["weight_decay"],
+        )
+
     source_bank = source_bank.to(device)
 
     mmd_cfg = cfg.get("mmd", {"enabled": False})
@@ -83,9 +92,10 @@ def run_adapter_mmd(model, train_loader: DataLoader, source_bank: torch.Tensor, 
                 mmd_term = mmd_loss(img_embeds, bank_sample)
                 loss = loss + mmd_cfg.get("weight", 1.0) * mmd_term
 
-            optim.zero_grad()
-            loss.backward()
-            optim.step()
+            if optim is not None:
+                optim.zero_grad()
+                loss.backward()
+                optim.step()
 
             epoch_contrastive += contrastive.item()
             epoch_mmd += float(mmd_term.detach())
