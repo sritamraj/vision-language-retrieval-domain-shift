@@ -27,6 +27,7 @@ def build_source_embedding_bank(model, source_loader: DataLoader, cfg: dict, dev
     images to build the fixed comparison distribution MMD aligns against.
     Cached to disk so repeated adaptation runs / ablations don't recompute it.
     """
+    model.to(device)
     model.eval()
     embeds = []
     target_n = cfg["mmd"]["source_bank_size"]
@@ -87,7 +88,7 @@ def run_adapter_mmd(model, train_loader: DataLoader, source_bank: torch.Tensor, 
             optim.step()
 
             epoch_contrastive += contrastive.item()
-            epoch_mmd += float(mmd_term)
+            epoch_mmd += float(mmd_term.detach())
 
         n = max(len(train_loader), 1)
         history.append({"epoch": epoch + 1, "contrastive_loss": epoch_contrastive / n, "mmd_loss": epoch_mmd / n})

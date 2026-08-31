@@ -66,28 +66,40 @@ toward the source distribution rather than just fitting target pairs in
 isolation (which is what Method A / plain fine-tuning does, and why it risks
 overfitting to a small target set — see ablations).
 
-## 3. Results (fill in after running `experiments/`)
+## 3. Results
 
-| Setting                        | R@1  | R@5  | R@10 | mAP  |
-|---------------------------------|------|------|------|------|
-| Source → Source (upper bound)   |  —   |  —   |  —   |  —   |
-| Source → Target (zero-shot)     |  —   |  —   |  —   |  —   |
-| Method A: full fine-tune        |  —   |  —   |  —   |  —   |
-| Method B: adapter + alignment   |  —   |  —   |  —   |  —   |
+The current experiment uses a **small-scale benchmark** intended for rapid experimentation and portfolio demonstration rather than a statistically definitive comparison.
 
-```
-Source Performance
-        ↓  (in-domain, upper bound)
-Target Performance
-        ↓  (zero-shot transfer — the drop we're studying)
-After Adaptation
-        ↓  (Method A vs Method B recover different fractions of the gap)
-```
+| Method | R@1 | R@5 | R@10 | mAP |
+|---|---:|---:|---:|---:|
+| Zero-shot | 4.17% | 21.39% | 38.89% | 13.33% |
+| **Fine-tune** | **4.44%** | **24.44%** | **49.72%** | **15.30%** |
+| Adapter + MMD | 4.17% | 22.50% | 40.83% | 14.68% |
 
-Regenerate this table and the drop chart with:
-```bash
-python -m src.evaluation.report --results_dir results/tables --out results/figures/performance_drop.png
-```
+### Interpretation
+
+On this small-scale evaluation:
+
+- Both adaptation methods improve over zero-shot transfer on several retrieval metrics.
+- Full fine-tuning achieves the strongest overall retrieval performance.
+- Adapter + MMD improves over zero-shot at Recall@5 and Recall@10.
+- Repeated adapter runs showed noticeable variance, so the current experiment does not support a strong claim that Adapter + MMD consistently outperforms full fine-tuning.
+
+**Takeaway:** lightweight adaptation can recover part of the cross-domain performance gap, but larger-scale and multi-seed evaluation is needed to determine whether MMD-based adapter adaptation can consistently outperform full fine-tuning.
+
+### Visualizations
+
+#### Retrieval Performance
+
+![Retrieval comparison](results/figures/retrieval_comparison.png)
+
+#### Embedding Space
+
+A t-SNE visualization of the Method B image/text embeddings provides a qualitative view of the learned representation geometry.
+
+![Method B embedding space](results/figures/method_b_tsne.png)
+
+> **Note:** t-SNE is used for qualitative visualization only; retrieval metrics are the primary quantitative evaluation.
 
 ## 4. Repo structure
 

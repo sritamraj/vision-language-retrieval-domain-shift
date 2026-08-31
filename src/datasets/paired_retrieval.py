@@ -70,6 +70,8 @@ class PairedRetrievalDataset(Dataset):
         text = sample.caption
         if self.tokenizer is not None:
             text = self.tokenizer(text)
+            if hasattr(text, "squeeze"):
+                text = text.squeeze(0)  # tokenizer returns [1, seq_len] for a single string; drop that leading dim
 
         return {
             "image": image,
