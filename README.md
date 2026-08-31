@@ -79,9 +79,9 @@ sketches across 12 overlapping classes.
 | Setting | R@1 | R@5 | R@10 | mAP |
 |---|---:|---:|---:|---:|
 | Source → Source (upper bound) | — | — | — | — |
-| Source → Target (zero-shot) | 0.0417 | 0.2139 | 0.3889 | 0.1333 |
-| Method A: full fine-tune | 0.0444 | 0.2444 | 0.4972 | 0.1530 |
-| Method B: adapter + MMD | 0.0500 | 0.2250 | 0.4056 | 0.1613 |
+| Source → Target (zero-shot) | 4.17% | 21.39% | 38.89% | 13.33% |
+| Method A: full fine-tune | 4.44% | 24.44% | 49.72% | 15.30% |
+| Method B: adapter + MMD | 5.00% | 22.50% | 40.56% | 16.13% |
 
 ### Interpretation
 
@@ -221,9 +221,9 @@ The application loads the trained baseline and Method B checkpoints and provides
 
 > The Colab/Gradio public URL is temporary and remains available only while the Colab runtime and demo process are running. No paid hosting is required.
 
-## 7. Citation / notes
+## 8. Citation / notes
 
-This is a research/portfolio project, not a production system. Dataset
-splits, checkpoints, and exact numbers should be filled in after running the
-pipeline end-to-end — the code is structured so every number in the results
-table above is reproducible from `experiments/`.
+This is a research/portfolio project rather than a production system. The
+reported results come from the small-scale Colab experiment described above.
+The experiment is intentionally limited in scale, so the results should be
+interpreted as preliminary rather than as a statistically definitive benchmark.
