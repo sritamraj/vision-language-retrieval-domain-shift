@@ -1,10 +1,15 @@
-from .metrics import compute_similarity_matrix, recall_at_k, mean_average_precision, full_eval
 from .evaluator import evaluate
+from .metrics import (
+    compute_similarity_matrix,
+    full_eval,
+    mean_average_precision,
+    recall_at_k,
+)
 
 __all__ = [
     "compute_similarity_matrix",
-    "recall_at_k",
-    "mean_average_precision",
-    "full_eval",
     "evaluate",
+    "full_eval",
+    "mean_average_precision",
+    "recall_at_k",
 ]

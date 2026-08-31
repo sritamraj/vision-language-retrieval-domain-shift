@@ -10,8 +10,8 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Optional
 
 from PIL import Image
 from torch.utils.data import Dataset
@@ -40,8 +40,8 @@ class PairedRetrievalDataset(Dataset):
         root: str,
         split_file: str,
         split: str = "train",
-        transform: Optional[Callable] = None,
-        tokenizer: Optional[Callable] = None,
+        transform: Callable | None = None,
+        tokenizer: Callable | None = None,
     ):
         self.root = root
         self.transform = transform
@@ -101,7 +101,7 @@ class FewShotTargetSampler:
             by_label.setdefault(s.label, []).append(i)
 
         kept = []
-        for label, idxs in by_label.items():
+        for idxs in by_label.values():
             rng.shuffle(idxs)
             kept.extend(idxs[:k_per_class])
         self.indices = sorted(kept)

@@ -1,4 +1,4 @@
-from .clip_wrapper import VisionLanguageRetriever
 from .adapters import Adapter
+from .clip_wrapper import VisionLanguageRetriever
 
-__all__ = ["VisionLanguageRetriever", "Adapter"]
+__all__ = ["Adapter", "VisionLanguageRetriever"]

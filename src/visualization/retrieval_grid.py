@@ -6,7 +6,7 @@ notebooks/03_error_analysis.ipynb uses to build the failure-case gallery.
 from __future__ import annotations
 
 import os
-from typing import Sequence
+from collections.abc import Sequence
 
 import matplotlib.pyplot as plt
 from PIL import Image

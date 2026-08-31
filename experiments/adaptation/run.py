@@ -15,7 +15,12 @@ import torch
 import yaml
 from torch.utils.data import DataLoader
 
-from src.adaptation import build_source_embedding_bank, load_source_embedding_bank, run_adapter_mmd, run_finetune
+from src.adaptation import (
+    build_source_embedding_bank,
+    load_source_embedding_bank,
+    run_adapter_mmd,
+    run_finetune,
+)
 from src.datasets import build_source_dataset, build_target_dataset
 from src.evaluation import evaluate
 from src.models import VisionLanguageRetriever
@@ -47,7 +52,7 @@ def main():
 
     method = cfg["adaptation_method"]
     if method == "full_finetune":
-        model, history = run_finetune(model, train_loader, cfg["train"], device=device)
+        model, _ = run_finetune(model, train_loader, cfg["train"], device=device)
 
     elif method == "adapter_mmd":
         mmd_cfg = cfg["train"].get("mmd", {"enabled": False})
@@ -62,7 +67,7 @@ def main():
                 source_bank = build_source_embedding_bank(model, source_loader, cfg["train"], device=device)
         else:
             source_bank = torch.zeros(1, model.embed_dim)
-        model, history = run_adapter_mmd(model, train_loader, source_bank, cfg["train"], device=device)
+        model, _ = run_adapter_mmd(model, train_loader, source_bank, cfg["train"], device=device)
 
     else:
         raise ValueError(f"Unknown adaptation_method: {method}")

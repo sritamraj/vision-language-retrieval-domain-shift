@@ -6,10 +6,8 @@ CLIP model or an adapter-augmented one.
 """
 from __future__ import annotations
 
-from typing import Optional
-
 import torch
-import torch.nn as nn
+from torch import nn
 
 try:
     import open_clip
@@ -25,7 +23,7 @@ class VisionLanguageRetriever(nn.Module):
         backbone_name: str = "ViT-B-32",
         pretrained: str = "openai",
         freeze_backbone: bool = False,
-        adapter_cfg: Optional[dict] = None,
+        adapter_cfg: dict | None = None,
     ):
         super().__init__()
         if open_clip is None:
@@ -41,8 +39,8 @@ class VisionLanguageRetriever(nn.Module):
             for p in self.clip.parameters():
                 p.requires_grad = False
 
-        self.image_adapter: Optional[Adapter] = None
-        self.text_adapter: Optional[Adapter] = None
+        self.image_adapter: Adapter | None = None
+        self.text_adapter: Adapter | None = None
         if adapter_cfg and adapter_cfg.get("enabled", False):
             targets = adapter_cfg.get("apply_to", ["image", "text"])
             bottleneck = adapter_cfg.get("bottleneck_dim", 64)
@@ -82,7 +80,7 @@ class VisionLanguageRetriever(nn.Module):
         return params
 
     @classmethod
-    def from_config(cls, model_cfg: dict, adapter_override: Optional[dict] = None):
+    def from_config(cls, model_cfg: dict, adapter_override: dict | None = None):
         backbone = model_cfg["backbone"]
         adapter_cfg = adapter_override if adapter_override is not None else model_cfg.get("adapter")
         return cls(
