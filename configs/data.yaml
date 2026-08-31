@@ -1,0 +1,20 @@
+source_domain:
+  name: "coco_captions_subset"
+  root: "data/source"
+  split_file: "data/source/splits.json"
+  captions_per_image: 5
+  image_size: 224
+
+target_domain:
+  name: "domainnet_sketch_clipart_subset"
+  root: "data/target"
+  split_file: "data/target/splits.json"
+  # target has far fewer labeled pairs than source, by design, to make
+  # the "adaptation under low supervision" story real
+  few_shot_pairs_per_class: 8
+  image_size: 224
+
+dataloader:
+  batch_size: 64
+  num_workers: 4
+  shuffle_train: true

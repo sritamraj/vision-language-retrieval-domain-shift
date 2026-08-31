@@ -1,0 +1,41 @@
+# Method B: freeze the backbone, train small adapters, and add an MMD term
+# that pulls the target embedding distribution toward the source distribution
+# (measured over a cached bank of source embeddings) rather than only fitting
+# the few target pairs directly. This is the strategy this repo argues for.
+experiment_name: "method_b_adapter_mmd"
+seed: 42
+stage: "adaptation"
+adaptation_method: "adapter_mmd"
+model: "configs/model.yaml"
+data: "configs/data.yaml"
+
+load_checkpoint: "experiments/baseline/checkpoints/best.pt"
+
+adapter_override:
+  enabled: true
+  bottleneck_dim: 64
+  residual_ratio: 0.2
+  apply_to: ["image", "text"]
+
+train:
+  epochs: 15
+  lr: 1.0e-4                    # adapters only, backbone frozen -> can use a higher LR
+  weight_decay: 0.01
+  loss: "clip_contrastive"
+  temperature: 0.07
+  hard_negative_mining: true
+  hard_negative_top_k: 5
+  mmd:
+    enabled: true
+    weight: 1.0
+    kernel: "rbf"
+    source_bank_path: "results/logs/source_embedding_bank.npz"
+    source_bank_size: 2000
+
+eval:
+  domain: "target"
+  metrics: ["recall@1", "recall@5", "recall@10", "mAP"]
+  out_file: "results/tables/method_b_eval.json"
+
+checkpoint:
+  save_dir: "experiments/adaptation/checkpoints/method_b"

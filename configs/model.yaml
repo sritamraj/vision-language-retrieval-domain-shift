@@ -1,0 +1,14 @@
+# Backbone shared by every experiment. Swapping this is how you'd extend
+# the study to a different V-L architecture without touching src/.
+backbone:
+  name: "ViT-B-32"
+  pretrained: "openai"          # open_clip pretrained tag
+  embed_dim: 512
+  freeze_backbone: false        # baseline/Method A fine-tune the whole thing
+  image_size: 224
+
+adapter:                        # only used by Method B
+  enabled: false
+  bottleneck_dim: 64
+  residual_ratio: 0.2           # alpha in CLIP-Adapter: out = ratio*adapter + (1-ratio)*clip_feat
+  apply_to: ["image", "text"]

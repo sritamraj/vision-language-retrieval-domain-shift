@@ -1,0 +1,9 @@
+data/source/images/
+data/target/images/
+experiments/*/checkpoints/
+notebooks/
+.git/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+results/logs/

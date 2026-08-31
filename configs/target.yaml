@@ -1,0 +1,13 @@
+experiment_name: "zero_shot_transfer_to_target"
+seed: 42
+stage: "target_eval_zero_shot"
+model: "configs/model.yaml"
+data: "configs/data.yaml"
+
+# no training here on purpose — this run just measures the performance drop
+load_checkpoint: "experiments/baseline/checkpoints/best.pt"
+
+eval:
+  domain: "target"
+  metrics: ["recall@1", "recall@5", "recall@10", "mAP"]
+  out_file: "results/tables/target_zero_shot_eval.json"

@@ -1,0 +1,31 @@
+# Ablation: Method B with the MMD alignment term removed (adapter + hard
+# negatives only). Isolates how much of Method B's gain is "alignment" vs
+# "capacity to fit target pairs at all."
+experiment_name: "ablation_no_mmd"
+seed: 42
+stage: "adaptation"
+adaptation_method: "adapter_mmd"
+model: "configs/model.yaml"
+data: "configs/data.yaml"
+load_checkpoint: "experiments/baseline/checkpoints/best.pt"
+adapter_override:
+  enabled: true
+  bottleneck_dim: 64
+  residual_ratio: 0.2
+  apply_to: ["image", "text"]
+train:
+  epochs: 15
+  lr: 1.0e-4
+  weight_decay: 0.01
+  loss: "clip_contrastive"
+  temperature: 0.07
+  hard_negative_mining: true
+  hard_negative_top_k: 5
+  mmd:
+    enabled: false
+eval:
+  domain: "target"
+  metrics: ["recall@1", "recall@5", "recall@10", "mAP"]
+  out_file: "results/tables/ablation_no_mmd_eval.json"
+checkpoint:
+  save_dir: "experiments/ablations/checkpoints/no_mmd"

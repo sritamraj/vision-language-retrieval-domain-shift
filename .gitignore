@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.egg-info/
+
+# data & artifacts — reproducible via data/scripts/ and experiments/
+data/source/images/
+data/target/images/
+data/source/splits.json
+data/target/splits.json
+experiments/*/checkpoints/
+results/tables/*.json
+results/tables/*_embeddings.pt
+results/figures/*.png
+results/logs/*.npz
+results/logs/*.log
+
+.env
+.DS_Store

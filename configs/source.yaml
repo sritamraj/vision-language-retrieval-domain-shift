@@ -1,0 +1,23 @@
+experiment_name: "baseline_source_train"
+seed: 42
+stage: "source_train"
+model: "configs/model.yaml"
+data: "configs/data.yaml"
+
+train:
+  epochs: 10
+  lr: 5.0e-6
+  weight_decay: 0.1
+  warmup_steps: 200
+  loss: "clip_contrastive"       # symmetric InfoNCE over the batch
+  temperature: 0.07
+  hard_negative_mining: false
+
+eval:
+  domain: "source"
+  metrics: ["recall@1", "recall@5", "recall@10", "mAP"]
+  out_file: "results/tables/source_eval.json"
+
+checkpoint:
+  save_dir: "experiments/baseline/checkpoints"
+  save_best_on: "recall@1"
