@@ -16,6 +16,9 @@ from __future__ import annotations
 import glob
 import os
 
+import os
+import glob
+
 import gradio as gr
 import torch
 from PIL import Image
@@ -129,4 +132,4 @@ with gr.Blocks(title="V-L Retrieval Under Domain Shift") as demo:
     run_btn.click(run_comparison, inputs=[text_in, image_in], outputs=[baseline_gallery, adapted_gallery, status])
 
 if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 7860)))
+    demo.launch(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 7860)), share=True)
