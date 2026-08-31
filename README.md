@@ -68,38 +68,48 @@ overfitting to a small target set — see ablations).
 
 ## 3. Results
 
-The current experiment uses a **small-scale benchmark** intended for rapid experimentation and portfolio demonstration rather than a statistically definitive comparison.
+The following results come from a **small-scale Colab experiment** using
+300 source-domain COCO validation images and 300 target-domain Quick, Draw!
+sketches across 12 overlapping classes.
 
-| Method | R@1 | R@5 | R@10 | mAP |
+> **Important:** this is a portfolio-scale experiment, not a full COCO/DomainNet
+> benchmark. The goal is to demonstrate the complete domain-shift retrieval
+> pipeline and make the experiment reproducible.
+
+| Setting | R@1 | R@5 | R@10 | mAP |
 |---|---:|---:|---:|---:|
-| Zero-shot | 4.17% | 21.39% | 38.89% | 13.33% |
-| **Fine-tune** | **4.44%** | **24.44%** | **49.72%** | **15.30%** |
-| Adapter + MMD | 4.17% | 22.50% | 40.83% | 14.68% |
+| Source → Source (upper bound) | — | — | — | — |
+| Source → Target (zero-shot) | 0.0417 | 0.2139 | 0.3889 | 0.1333 |
+| Method A: full fine-tune | 0.0444 | 0.2444 | 0.4972 | 0.1530 |
+| Method B: adapter + MMD | 0.0500 | 0.2250 | 0.4056 | 0.1613 |
 
 ### Interpretation
 
-On this small-scale evaluation:
+On this small target-domain experiment, Method B improves **R@1 and mAP**
+over zero-shot transfer, while Method A achieves the strongest R@5/R@10
+retrieval in this particular run.
 
-- Both adaptation methods improve over zero-shot transfer on several retrieval metrics.
-- Full fine-tuning achieves the strongest overall retrieval performance.
-- Adapter + MMD improves over zero-shot at Recall@5 and Recall@10.
-- Repeated adapter runs showed noticeable variance, so the current experiment does not support a strong claim that Adapter + MMD consistently outperforms full fine-tuning.
+The result does **not** establish that adapter + MMD universally outperforms
+full fine-tuning. Instead, it demonstrates that lightweight adaptation can
+recover part of the domain-shift gap while using an adapter-based approach.
 
-**Takeaway:** lightweight adaptation can recover part of the cross-domain performance gap, but larger-scale and multi-seed evaluation is needed to determine whether MMD-based adapter adaptation can consistently outperform full fine-tuning.
+Because the target evaluation set is small, these differences should be
+treated as preliminary rather than statistically conclusive. A larger
+COCO/DomainNet-scale experiment would be required for a stronger comparison.
 
-### Visualizations
+### Qualitative retrieval
 
-#### Retrieval Performance
+The repository also includes a qualitative comparison of baseline and
+adapted retrieval results:
 
 ![Retrieval comparison](results/figures/retrieval_comparison.png)
 
-#### Embedding Space
+### Embedding visualization
 
-A t-SNE visualization of the Method B image/text embeddings provides a qualitative view of the learned representation geometry.
+The target-domain image/text embeddings after Method B adaptation are
+visualized with t-SNE:
 
-![Method B embedding space](results/figures/method_b_tsne.png)
-
-> **Note:** t-SNE is used for qualitative visualization only; retrieval metrics are the primary quantitative evaluation.
+![Method B t-SNE](results/figures/method_b_tsne.png)
 
 ## 4. Repo structure
 
@@ -191,6 +201,25 @@ pinned: false
 
 then `git push` to the Space's git remote the same way you'd push to GitHub
 — HF builds the image from the root `Dockerfile` and starts the container.
+
+## 7. Run the Demo in Google Colab
+
+The research demo can be run without local GPU setup.
+
+### Quick start
+
+Open the project in Google Colab, clone the repository, install the dependencies, and launch the Gradio application:
+
+```python
+!git clone https://github.com/sritamraj/vision-language-retrieval-domain-shift.git
+%cd vision-language-retrieval-domain-shift
+!pip install -r requirements.txt
+!python app/demo.py
+```
+
+The application loads the trained baseline and Method B checkpoints and provides text-to-image and image-to-image retrieval over the target-domain gallery.
+
+> The Colab/Gradio public URL is temporary and remains available only while the Colab runtime and demo process are running. No paid hosting is required.
 
 ## 7. Citation / notes
 
