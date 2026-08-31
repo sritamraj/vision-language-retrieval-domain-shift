@@ -81,13 +81,13 @@ sketches across 12 overlapping classes.
 | Source → Source (upper bound) | — | — | — | — |
 | Source → Target (zero-shot) | 4.17% | 21.39% | 38.89% | 13.33% |
 | Method A: full fine-tune | 4.44% | 24.44% | 49.72% | 15.30% |
-| Method B: adapter + MMD | 5.00% | 22.50% | 40.56% | 16.13% |
+| Method B: adapter + MMD | 4.72% | 21.39% | 40.00% | 15.09% |
 
 ### Interpretation
 
-On this small target-domain experiment, Method B improves **R@1 and mAP**
-over zero-shot transfer, while Method A achieves the strongest R@5/R@10
-retrieval in this particular run.
+On this small target-domain experiment, Method B improves **R@1, R@10,
+and mAP** over zero-shot transfer. R@5 remains unchanged from the baseline
+in the recorded Method B evaluation.
 
 The result does **not** establish that adapter + MMD universally outperforms
 full fine-tuning. Instead, it demonstrates that lightweight adaptation can
